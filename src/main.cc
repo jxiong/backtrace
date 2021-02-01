@@ -13,6 +13,7 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    printf("malloc in main\n");
     free(malloc(4096));
 
     myfunc(atoi(argv[1]));

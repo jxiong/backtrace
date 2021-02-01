@@ -3,10 +3,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <spdlog/spdlog.h>
+
 void
 myfunc3(void)
 {
-	printf("Malloc: \n");
+	spdlog::info("Malloc in lib: \n");
 	free(malloc(1024));
 }
 

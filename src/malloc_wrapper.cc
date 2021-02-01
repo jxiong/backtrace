@@ -3,6 +3,8 @@
 #include <execinfo.h>
 #include <unistd.h>
 
+#include <spdlog/spdlog.h>
+
 #define UNW_LOCAL_ONLY
 #include <libunwind.h>
 #include <cxxabi.h>
@@ -23,7 +25,7 @@ void absl_backtrace()
 	void* result[BT_BUFSZ];
 
 	auto rc = absl::GetStackTrace(result, BT_BUFSZ, 0);
-	printf("%d frames returned\n", rc);
+	spdlog::info("======== absl: {} frames returned\n", rc);
 }
 
 void gnu_backtrace()
@@ -32,8 +34,9 @@ void gnu_backtrace()
 	void *buffer[BT_BUFSZ];
 	char **strings;
 
+	spdlog::info("======== gnu: backtrace() returned {} addresses\n", nptrs);
+
 	nptrs = backtrace(buffer, BT_BUFSZ);
-	printf("backtrace() returned %d addresses\n", nptrs);
 
 	/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)
 	   would produce similar output to the following: */
@@ -54,6 +57,8 @@ void mybacktrace()
 {
 	absl_backtrace();
 	gnu_backtrace();
+
+	spdlog::info("======== unwind: backtrace()\n");
 
 	unw_cursor_t cursor;
 	unw_context_t context;
@@ -96,7 +101,7 @@ void *__wrap_malloc(size_t size)
 {
 	void *lptr = __real_malloc(size);
 
-	printf("Malloc: %lu bytes @%p\n", size, lptr);
+	spdlog::info("Malloc: {} bytes @{:p}\n", size, lptr);
 	mybacktrace();
 
 	return lptr;
@@ -104,6 +109,6 @@ void *__wrap_malloc(size_t size)
 
 void __wrap_free(void *ptr)
 {
-	printf("Free: @%p is freed\n", ptr);
+	spdlog::info("Free: @{:p} is freed\n", ptr);
 	__real_free(ptr);
 }
