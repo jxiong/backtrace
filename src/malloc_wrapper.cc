@@ -38,9 +38,6 @@ void gnu_backtrace()
 
 	nptrs = backtrace(buffer, BT_BUFSZ);
 
-	/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)
-	   would produce similar output to the following: */
-
 	strings = backtrace_symbols(buffer, nptrs);
 	if (strings == NULL) {
 		perror("backtrace_symbols");
