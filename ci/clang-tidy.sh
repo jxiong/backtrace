@@ -25,12 +25,12 @@ done < <(git diff-tree --no-commit-id --diff-filter=d --name-only -r "$base" HEA
 
 topdir=$(readlink -f `dirname $0`/..)
 build_dir=${topdir}/build
-mkdir -p ${build_dir} && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${build_dir}
+mkdir -p ${build_dir} && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B ${build_dir}
 
 git diff -r --no-commit-id --diff-filter=d ${base}..HEAD > diff
 cat diff | clang-tidy-diff -p1 -path ${build_dir} -export-fixes clang-tidy-output -- -Wall
 
 reponame=$(basename `git rev-parse --show-toplevel`)
 env > env.out
+echo "PR: ${CHANGE_ID} REPO: `basename ${GIT_URL} .git`"
 #${topdir}/ci/generate-output.py
-
