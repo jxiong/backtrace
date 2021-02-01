@@ -16,6 +16,9 @@ set(CMAKE_CXX_FLAGS "-O2 -fno-omit-frame-pointer -Wall -fno-optimize-sibling-cal
 find_package(absl REQUIRED)
 find_package(spdlog REQUIRED)
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(Unwind REQUIRED libunwind)
+
 #add_library(backtrace src/backtrace.cc)
 #target_link_libraries(backtrace unwind absl::debugging)
 
