@@ -24,6 +24,7 @@ void absl_backtrace()
 {
 	void* result[BT_BUFSZ];
 
+	/* will add backtrace soon */
 	auto rc = absl::GetStackTrace(result, BT_BUFSZ, 0);
 	spdlog::info("======== absl: {} frames returned\n", rc);
 }
