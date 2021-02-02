@@ -12,7 +12,7 @@ myfunc3(void)
 	free(malloc(1024));
 }
 
-static void   /* "static" means don't export the symbol... */
+static void   /* "static" means don't export this symbol... */
 myfunc2(void)
 {
     myfunc3();
