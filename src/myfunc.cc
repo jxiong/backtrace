@@ -8,7 +8,8 @@
 void
 myfunc3(void)
 {
-	spdlog::info("Malloc in lib: \n");
+	int a;
+	spdlog::info("Malloc in lib: \n", a);
 	free(malloc(1024));
 }
 

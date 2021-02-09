@@ -46,7 +46,7 @@ void gnu_backtrace()
 	}
 
 	for (j = 0; j < nptrs; j++)
-		printf("%s\n", strings[j]);
+		printf("callback: %s\n", strings[j]);
 
 	free(strings);
 }
@@ -99,7 +99,7 @@ void *__wrap_malloc(size_t size)
 {
 	void *lptr = __real_malloc(size);
 
-	spdlog::info("Malloc: {} bytes @{:p}\n", size, lptr);
+	spdlog::info("Malloc: {} byte @{:p}\n", size, lptr);
 	mybacktrace();
 
 	return lptr;
