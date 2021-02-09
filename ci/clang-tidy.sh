@@ -33,4 +33,4 @@ cat diff | clang-tidy-diff -p1 -path ${build_dir} -export-fixes clang-tidy-outpu
 reponame=$(basename `git rev-parse --show-toplevel`)
 env > env.out
 echo "PR: ${CHANGE_ID} REPO: `basename ${GIT_URL} .git`"
-#${topdir}/ci/generate-output.py
+${topdir}/ci/generate-output.py --repo jxiong/backtrace --srcdir $(realpath .) --diff diff --tidy clang-tidy-output --pr ${CHANGE_ID}
