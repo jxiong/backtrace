@@ -26,6 +26,8 @@ done < <(git diff-tree --no-commit-id --diff-filter=d --name-only -r "$base" HEA
 build_dir=build
 mkdir -p ${build_dir} && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${build_dir}
 
+git diff -r --no-commit-id --diff-filter=d ${base}..HEAD | clang-tidy-diff -p1 -path build -export-fixes ${build_dir}/clang-tidy-output -- -Wall
+
 # -m specifies that `parallel` should distribute the arguments evenly across the executing jobs.
 # -p Tells clang-tidy where to find the `compile_commands.json`.
 # `{}` specifies where `parallel` adds the command-line arguments.
