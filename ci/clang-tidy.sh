@@ -23,16 +23,14 @@ done < <(git diff-tree --no-commit-id --diff-filter=d --name-only -r "$base" HEA
 
 [ -z "${modified_filepaths}" ] && { echo "no files modified"; exit 0; }
 
-build_dir=build
+topdir=$(readlink -f `dirname $0`/..)
+build_dir=${topdir}/build
 mkdir -p ${build_dir} && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${build_dir}
 
-git diff -r --no-commit-id --diff-filter=d ${base}..HEAD | clang-tidy-diff -p1 -path build -export-fixes ${build_dir}/clang-tidy-output -- -Wall
+git diff -r --no-commit-id --diff-filter=d ${base}..HEAD > diff
+cat diff | clang-tidy-diff -p1 -path ${build_dir} -export-fixes clang-tidy-output -- -Wall
 
-# -m specifies that `parallel` should distribute the arguments evenly across the executing jobs.
-# -p Tells clang-tidy where to find the `compile_commands.json`.
-# `{}` specifies where `parallel` adds the command-line arguments.
-# `:::` separates the command `parallel` should execute from the arguments it should pass to the commands.
-# `| tee` specifies that we would like the output of clang-tidy to go to `stdout` and also to capture it in
-# `$build_dir/clang-tidy-output` for later processing.
-parallel -m clang-tidy -p $build_dir --warnings-as-errors='*' {} ::: "${modified_filepaths[@]}" | tee ${build_dir}/clang-tidy-output
-cat build/clang-tidy-output | ./ci/clang-tidy-to-junit.py . > ${build_dir}/junit.xml
+reponame=$(basename `git rev-parse --show-toplevel`)
+env > env.out
+#${topdir}/ci/generate-output.py
+
