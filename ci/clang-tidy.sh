@@ -6,7 +6,7 @@ mkdir -p ${build_dir} && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B ${build_dir
 
 base=$(git merge-base refs/remotes/origin/main HEAD)
 git diff -r --no-commit-id --diff-filter=d ${base}..HEAD > diff
-cat diff | clang-tidy-diff -p1 -path ${build_dir} -export-fixes clang-tidy-output -- -Wall
+cat diff | clang-tidy-diff -p1 -checks='*' -path ${build_dir} -export-fixes clang-tidy-output -- -Wall
 
 reponame=$(basename `git rev-parse --show-toplevel`)
 env > env.out
