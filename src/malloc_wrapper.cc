@@ -31,13 +31,13 @@ void absl_backtrace()
 
 void gnu_backtrace()
 {
-	int j, nptrs;
+	int j;
 	void *buffer[BT_BUFSZ];
 	char **strings;
 
-	spdlog::info("======== gnu: backtrace() returned {} addresses\n", nptrs);
+	int nptrs = backtrace(buffer, BT_BUFSZ);
 
-	nptrs = backtrace(buffer, BT_BUFSZ);
+	spdlog::info("======== gnu: backtrace() returned {} addresse\n", nptrs);
 
 	strings = backtrace_symbols(buffer, nptrs);
 	if (strings == NULL) {
