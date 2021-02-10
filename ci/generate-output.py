@@ -32,12 +32,10 @@ class PostComment(object):
             if filename is None:
                 continue
     
-            print(filename)
             if not re.match('^.*\.(cpp|cc|c\+\+|cxx|c|cl|h|hpp|m|mm|inc)$', filename, re.IGNORECASE):
                 continue
     
             match = re.search('^@@.*\+(\d+)(,(\d+))?', line)
-            print("line {} matches {}".format(line, match))
             if match:
                 start_line = int(match.group(1))
                 line_count = 1
